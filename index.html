@@ -1217,7 +1217,7 @@ function sec_methods(){
      +'</dl></div></div>';
   });
   h+='</div>';
-  h+='<h3>Practice, then assessed</h3><p class="body">Rule 2 asks for two linked activities on the same topic. Only the second one is marked.</p>'
+  h+='<h3>Practice, then assessed</h3><p class="body">Rule 2 asks for two linked activities on the same topic, the second with a new scenario. Only the second one is marked.</p>'
    +'<div class="tablewrap"><table><thead><tr><th>Arrangement</th><th>Practice &middot; week 5, no mark</th><th>Assessed &middot; week 9</th></tr></thead><tbody>'
    +'<tr><td class="k">In class only</td><td>M10 Structured Academic Controversy, 90 minutes in class</td><td>M9 Negotiation on the assessed scenario, 2 hours in class</td></tr>'
    +'<tr><td class="k wrap">With an external partner</td><td>M8 Role-Play with built-in role conflict, 90 minutes</td><td>M6 SULAM or M7 Living Lab with a real affected party, half a day. Requires a partner agreement and a risk assessment.</td></tr>'
@@ -1225,7 +1225,7 @@ function sec_methods(){
    +'<div class="stack"><div class="panel p-step"><span class="tag">What the feedback between them does</span><ol>'
    +'<li>After run one, students self-assess against the published rubric. Ten minutes, in writing.</li>'
    +'<li>You return one sentence naming the single criterion to work on. Not a grade.</li>'
-   +'<li>Run two uses a different scenario and the identical rubric.</li>'
+   +'<li>Run two uses the same topic, a new scenario and the identical rubric.</li>'
    +'<li>Only run two is marked. Run one carries no mark, and is the reason run two is usable.</li>'
    +'</ol></div>'
    +'<div class="panel p-warn"><span class="tag">Methods that cannot carry a claim</span><p><strong>Gamification</strong> develops motivation only. <strong>Reflective and narrative methods alone</strong> evidence Self-awareness, not working across difference. <strong>A written exam</strong> reaches only the cognitive domain.</p></div></div>';
@@ -1364,7 +1364,7 @@ function sec_audit(){
    +'<tr><td class="k">Week 1</td><td>Tell students the competency in plain language, and that a group event will produce an individual mark.</td></tr>'
    +'<tr><td class="k">Week 4</td><td>Release the brief with the rubric. Record the date in the course file.</td></tr>'
    +'<tr><td class="k">Week 5</td><td>Practice activity. Students self-assess; return one sentence naming one criterion. No mark.</td></tr>'
-   +'<tr><td class="k">Week 9</td><td>Assessed activity. Use the same rubric with a different scenario.</td></tr>'
+   +'<tr><td class="k">Week 9</td><td>Assessed activity. Same topic, new scenario, same rubric.</td></tr>'
    +'<tr><td class="k">Week 11</td><td>Individual submission, plus the structured self-assessment.</td></tr>'
    +'<tr><td class="k">Weeks 12&ndash;13</td><td>Mark, then second-mark a ten per cent sample and every borderline case.</td></tr>'
    +'<tr><td class="k wrap">After results</td><td>Revise weak evidence indicators &mdash; never the fixed descriptors. Report attainment to the programme.</td></tr>'
@@ -1410,7 +1410,7 @@ var CLAUSES=[{k:"a",crit:0,lab:"Clause (a) &rarr; criterion 1 &middot; Represent
  {k:"c",crit:1,lab:"Clause (c) &rarr; criterion 2 &middot; Who is absent",ask:"An affected group absent from the process, and what including them would require."},
  {k:"d",crit:3,lab:"Clause (d) &rarr; criterion 4 &middot; Individual contribution",ask:"What this student changed or conceded, at whose prompting, and what they now understand differently."}];
 function P(){ var p=store.get("plan2",null);
-  if(!p||typeof p!=="object"){ p={course:"",sdg:"",topic:"",incompat:"",least:"",clo:"",partner:"",m1:"",w1:"",m2:"",w2:"",sub:"",subEdited:false,len:"",subweek:"",weight:"",ca:"",cb:"",cc:"",cd:"",title:"",scenario:"",rub:null,rubCluster:-1,rubOk:false,marker:"",chk:[false,false,false]};
+  if(!p||typeof p!=="object"){ p={course:"",sdg:"",topic:"",incompat:"",least:"",clo:"",partner:"",m1:"",w1:"",m2:"",m2Edited:false,w2:"",sub:"",subEdited:false,len:"",subweek:"",weight:"",ca:"",cb:"",cc:"",cd:"",title:"",scenario:"",rub:null,rubCluster:-1,rubOk:false,marker:"",chk:[false,false,false]};
     var old=function(k){ return store.get("plan_"+k,""); };
     p.course=old("course"); p.topic=old("topic"); p.incompat=old("incompat"); p.least=old("least"); p.marker=old("marker");
     p.ca=old("ca"); p.cb=old("cb"); p.cc=old("cc"); p.cd=old("cd"); if(old("sub")){ p.sub=old("sub"); p.subEdited=true; }
@@ -1463,11 +1463,13 @@ function renderPlan(){
     ta("pClo",p.clo,"e.g. Reconcile client, regulator and downstream-user requirements for a discharge standard, and defend the selection in an individual memo naming the interest conceded to and why.")
     +'<p class="hint">Verbs that work: '+CVERBS.map(function(v){return '<b>'+v+'</b>';}).join(" &middot; ")+'</p>'
 );
-  h+=card(5,d[4],"Two linked activities","Practise once without a mark, return one sentence of feedback, then assess with the same rubric on a different scenario. &#9733; marks the methods recommended for your cluster.",
+  h+=card(5,d[4],"Two linked activities","Practise once without a mark, return one sentence of feedback, then assess on the same topic with a new scenario and the same rubric. &#9733; marks the methods recommended for your cluster.",
     '<div class="two"><div class="blk"><h4>Practice run <span class="pill">no mark</span></h4><label class="fl" for="pM1">Method</label><select class="pin" id="pM1">'+methodOpts(p.m1)+'</select>'
     +'<label class="fl" for="pW1">Week</label>'+inp("pW1",p.w1,"e.g. 5")+methodInfo(p.m1)+'</div>'
     +'<div class="blk"><h4>Assessed run</h4><label class="fl" for="pM2">Method</label><select class="pin" id="pM2">'+methodOpts(p.m2)+'</select>'
+    +(p.m1?(p.m2===p.m1?'<p class="hint">Same method as the practice run. Change it here if you want a different one.</p>':'<p class="hint">'+(p.m2?'Different from the practice run. ':'')+'<button type="button" class="linkbtn" id="pM2Same">Use the practice method</button></p>'):'')
     +'<label class="fl" for="pW2">Week</label>'+inp("pW2",p.w2,"e.g. 9")+methodInfo(p.m2)+'</div></div>'
+    +'<p class="hint">Using the same method for both runs is simplest. A different method is fine if it uses the same rubric and asks for the same kind of individual evidence.</p>'
     +((p.w1&&p.w2&&parseInt(p.w2,10)<=parseInt(p.w1,10))?'<div class="wchip">The assessed run should come after the practice run, with time for feedback between.</div>':''));
   var mm=mById(p.m2);
   h+=card(6,d[5],"Individual submission","The group event creates the conditions; the individual submission carries the mark. It is suggested from your assessed method, and you can edit it.",
@@ -1536,7 +1538,12 @@ function wirePlan(){ var p=P();
   var sb=$("#pSub"); if(sb) sb.addEventListener("input",function(){ var q=P(); q.sub=sb.value; q.subEdited=true; PS(q); sb.style.height="auto"; sb.style.height=sb.scrollHeight+2+"px"; refreshLight(q); });
   var sr=$("#pSubReset"); if(sr) sr.addEventListener("click",function(){ var q=P(); q.subEdited=false; q.sub=sugSub(q); PS(q); renderPlan(); });
   $$(".sdgpick").forEach(function(b){ b.addEventListener("click",function(){ var q=P(); q.sdg=(String(q.sdg)===b.dataset.sdg)?"":b.dataset.sdg; PS(q); renderPlan(); }); });
-  ["pPartner","pM1","pM2"].forEach(function(id){ var el=$("#"+id); if(el) el.addEventListener("change",function(){ var q=P(); q[{pPartner:"partner",pM1:"m1",pM2:"m2"}[id]]=el.value; if(id==="pM2"&&!q.subEdited) q.sub=sugSub(q); PS(q); renderPlan(); }); });
+  ["pPartner","pM1","pM2"].forEach(function(id){ var el=$("#"+id); if(el) el.addEventListener("change",function(){ var q=P(), oldM1=q.m1;
+    if(id==="pM1"){ var kept=q.m2Edited||(q.m2&&q.m2!==oldM1); q.m1=el.value; if(!kept) q.m2=q.m1; }
+    else if(id==="pM2"){ q.m2=el.value; q.m2Edited=!!el.value&&el.value!==q.m1; }
+    else q.partner=el.value;
+    if(id!=="pPartner"&&!q.subEdited) q.sub=sugSub(q); PS(q); renderPlan(); }); });
+  var ms=$("#pM2Same"); if(ms) ms.addEventListener("click",function(){ var q=P(); q.m2=q.m1; q.m2Edited=false; if(!q.subEdited) q.sub=sugSub(q); PS(q); renderPlan(); });
   $$(".rubcell").forEach(function(t){ t.addEventListener("input",function(){ var q=P(); ensureRub(q); var a=t.dataset.r.split("|"); q.rub[+a[0]][a[1]]=t.value; PS(q); t.style.height="auto"; t.style.height=t.scrollHeight+2+"px"; }); });
   var rr=$("#pRubReset"); if(rr) rr.addEventListener("click",function(){ if(confirm("Replace the rubric with your cluster's worked rubric?")){ var q=P(); q.rub=clusterRub(); q.rubCluster=ci; q.rubOk=false; PS(q); renderPlan(); } });
   var ok=$("#pRubOk"); if(ok) ok.addEventListener("change",function(){ var q=P(); q.rubOk=ok.checked; PS(q); refreshLight(q); });
